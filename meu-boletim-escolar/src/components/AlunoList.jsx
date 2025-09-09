@@ -1,4 +1,3 @@
-// src/components/AlunoList.jsx
 import React from 'react';
 import AlunoItem from './AlunoItem';
 

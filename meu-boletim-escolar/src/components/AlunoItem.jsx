@@ -7,9 +7,9 @@ const AlunoItem = ({ aluno, onRemover, onEditar }) => {
 
     return (
         <li>
-            <span>**Nome:** {aluno.nome}</span>
-            <span>**Média:** {media.toFixed(2)}</span>
-            <span>**Situação:** {situacao}</span>
+            <span>Nome: {aluno.nome}</span>
+            <span> Média: {media.toFixed(2)}</span>
+            <span> Situação: {situacao}</span>
             <button onClick={() => onEditar(aluno)}>Editar</button>
             <button onClick={() => onRemover(aluno.id)}>Remover</button>
         </li>

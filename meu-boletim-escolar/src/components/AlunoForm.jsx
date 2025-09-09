@@ -1,4 +1,3 @@
-// src/components/AlunoForm.jsx
 import React, { useState, useEffect } from 'react';
 
 const AlunoForm = ({ onSubmit, alunoEditando }) => {

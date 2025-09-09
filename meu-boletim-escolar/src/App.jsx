@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React, { useState, useEffect } from 'react';
+import AlunoForm from './components/AlunoForm';
+import AlunoList from './components/AlunoList';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+    const [alunos, setAlunos] = useState(() => {
+        const savedAlunos = localStorage.getItem('alunos');
+        return savedAlunos ? JSON.parse(savedAlunos) : [];
+    });
+    const [alunoEditando, setAlunoEditando] = useState(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    useEffect(() => {
+        localStorage.setItem('alunos', JSON.stringify(alunos));
+    }, [alunos]);
 
-export default App
+    const handleAdicionarEditarAluno = (aluno) => {
+        if (aluno.id) {
+            setAlunos(alunos.map(a => a.id === aluno.id ? aluno : a));
+        } else {
+            setAlunos([...alunos, { ...aluno, id: Date.now() }]);
+        }
+        setAlunoEditando(null);
+    };
+
+    const handleRemoverAluno = (id) => {
+        setAlunos(alunos.filter(aluno => aluno.id !== id));
+    };
+
+    const handleEditarAluno = (aluno) => {
+        setAlunoEditando(aluno);
+    };
+
+    return (
+        <div className="container">
+            <h1>Boletim Escolar</h1>
+            <AlunoForm
+                onSubmit={handleAdicionarEditarAluno}
+                alunoEditando={alunoEditando}
+            />
+            <AlunoList
+                alunos={alunos}
+                onRemover={handleRemoverAluno}
+                onEditar={handleEditarAluno}
+            />
+        </div>
+    );
+};
+
+export default App;
